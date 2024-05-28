@@ -2,6 +2,8 @@ package com.app.v
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 
@@ -29,6 +31,24 @@ class HomeActivity : AppCompatActivity() {
 
         bubbleEmitterView = findViewById(R.id.bubbleEmitter)
         emitBubbles()
+
+        rippleBackground1.setOnClickListener {
+            try {
+                val intent = packageManager.getLaunchIntentForPackage("com.samsung.android.dialer")
+                startActivity(intent)
+            } catch (ex : Exception){
+                Log.d("TAG","No app found with package name")
+            }
+        }
+
+        rippleBackground2.setOnClickListener {
+            try {
+                val intent = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
+                startActivity(intent)
+            } catch (ex : Exception){
+                Log.d("TAG","No app found with package name")
+            }
+        }
 
 
     }
