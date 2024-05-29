@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
         Handler().postDelayed({
-            Intent(this,HomeActivity::class.java).apply {
+            Intent(this,AdminActivity::class.java).apply {
                 startActivity(this)
                 finish()
             }
