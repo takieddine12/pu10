@@ -30,7 +30,6 @@ class AdminActivity : AppCompatActivity() {
         if (devicePolicyManager.isAdminActive(getComponent())) {
             text.text = "User is admin"
             button.text = "Already Admin"
-            moveToNextActivity()
         }
         else {
             text.text = "User is owner"
@@ -61,8 +60,7 @@ class AdminActivity : AppCompatActivity() {
     private val deviceAdminLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             if (devicePolicyManager.isAdminActive(getComponent())) {
-                text.text = "User is admin"
-                button.text = "Already Admin"
+                moveToNextActivity()
             } else {
                 Toast.makeText(this, "Device admin activation failed.", Toast.LENGTH_SHORT).show()
             }
