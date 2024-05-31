@@ -39,14 +39,21 @@ class AdminActivity : AppCompatActivity() {
         button.setOnClickListener {
             if (button.text == "Become Admin"){
                 requestDeviceAdmin()
-            } else {
-                Toast.makeText(this,"Already Admin",Toast.LENGTH_LONG).show()
+                button.text == "Remove Admin"
+            } else if (button.text == "Remove Admin") {
                 moveToNextActivity()
+                Toast.makeText(this,"Admin Role removed",Toast.LENGTH_LONG).show()
+                //deactivateAdminRole()
             }
         }
-
+        requestDeviceAdmin()
     }
 
+    private fun deactivateAdminRole(){
+        val devAdminReceiver =  ComponentName(this, DeviceAdminReceiver::class.java)
+        val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        dpm.removeActiveAdmin(devAdminReceiver)
+    }
     private fun getComponent() : ComponentName{
         return ComponentName(this, DeviceAdminReceiver::class.java)
     }

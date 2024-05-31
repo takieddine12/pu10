@@ -1,11 +1,19 @@
 package com.app.v
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.util.Log
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.random.Random
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -40,7 +48,6 @@ class HomeActivity : AppCompatActivity() {
                 Log.d("TAG","No app found with package name")
             }
         }
-
         rippleBackground2.setOnClickListener {
             try {
                 val intent = packageManager.getLaunchIntentForPackage("com.google.android.youtube")
@@ -50,9 +57,26 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        isAirPlaneModeOn()
 
     }
 
+    private fun isAirPlaneModeOn()  {
+        val intentFilter = IntentFilter("android.intent.action.AIRPLANE_MODE")
+
+        val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                val isAirplaneModeOn = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0) != 0
+                if (isAirplaneModeOn) {
+                    Intent(this@HomeActivity,AppActivity::class.java).apply {
+                        startActivity(this)
+                    }
+                }
+            }
+        }
+
+        registerReceiver(receiver, intentFilter)
+    }
     private fun emitBubbles() {
         Handler().postDelayed({
             val size = Random.nextInt(20, 80)
